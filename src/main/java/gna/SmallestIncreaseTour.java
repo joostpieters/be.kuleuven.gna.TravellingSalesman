@@ -1,5 +1,6 @@
 package gna;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,6 +10,7 @@ public class SmallestIncreaseTour extends IncrementallyConstructedTour {
 
     public SmallestIncreaseTour(World world) {
         super(world);
+        tour = new ArrayList<Point>();
     }
 
     @Override
@@ -18,11 +20,17 @@ public class SmallestIncreaseTour extends IncrementallyConstructedTour {
 
     @Override
     public double getTotalDistance() {
-        throw new RuntimeException("not implemented");
+        double totalDistance = 0.0;
+        for (int i = 0; i < tour.size(); i++) {
+            totalDistance += tour.get(i).distanceTo(tour.get(i + 1));
+        }
+        return totalDistance;
     }
 
     @Override
     public List<Point> getVisitSequence() {
-        throw new RuntimeException("not implemented");
+        return tour;
     }
+
+    private List<Point> tour;
 }

@@ -1,5 +1,6 @@
 package gna;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,12 +19,17 @@ public class MinimalSpanningTreeTour extends Tour {
 
     public MinimalSpanningTreeTour(World world) {
         super(world);
+        tour = new ArrayList<Point>();
         // compute route here
     }
 
     @Override
     public double getTotalDistance() {
-        throw new RuntimeException("not implemented");
+        double totalDistance = 0.0;
+        for (int i = 0; i < tour.size(); i++) {
+            totalDistance += tour.get(i).distanceTo(tour.get(i + 1));
+        }
+        return totalDistance;
     }
 
     /**
@@ -56,4 +62,6 @@ public class MinimalSpanningTreeTour extends Tour {
     public List<Point> getVisitSequence() {
         throw new RuntimeException("not implemented");
     }
+
+    private List<Point> tour;
 }
