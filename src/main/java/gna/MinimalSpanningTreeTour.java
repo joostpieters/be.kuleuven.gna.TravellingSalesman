@@ -26,7 +26,7 @@ public class MinimalSpanningTreeTour extends Tour {
     @Override
     public double getTotalDistance() {
         double totalDistance = 0.0;
-        for (int i = 0; i < tour.size(); i++) {
+        for (int i = 0; i < tour.size() - 1; i++) {
             totalDistance += tour.get(i).distanceTo(tour.get(i + 1));
         }
         return totalDistance;

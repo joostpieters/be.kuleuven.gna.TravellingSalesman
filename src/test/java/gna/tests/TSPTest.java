@@ -32,17 +32,26 @@ public class TSPTest {
     public void testNearestNeighbor() {
         Tour tour = new NearestNeighborTour(world);
         assertFalse(tour.getVisitSequence().isEmpty());
+        System.out.println("Nearest neighbor:");
+        System.out.println(tour.getTotalDistance());
+        System.out.println(tour);
     }
 
     @Test
     public void testSmallestIncrease() {
         Tour tour = new SmallestIncreaseTour(world);
         assertFalse(tour.getVisitSequence().isEmpty());
+        System.out.println("Smallest Increase: ");
+        System.out.println(tour.getTotalDistance());
+        System.out.println(tour);
     }
 
-    @Test
+    /* @Test
     public void testMinimalSpanningTree() {
         Tour tour = new MinimalSpanningTreeTour(world);
         assertFalse(tour.getVisitSequence().isEmpty());
-    }
+        System.out.println("MST: ");
+        System.out.println(tour.getTotalDistance());
+        System.out.println(tour);
+    }*/
 }
