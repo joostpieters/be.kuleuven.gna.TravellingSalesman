@@ -65,22 +65,17 @@ public class MinimalSpanningTreeTour extends Tour {
     public MinimalSpanningTreeTour(World world) {
         super(world);
         constructMST(world);
+        constructTour();
     }
 
     @Override
     public double getTotalDistance() {
         double totalDistance = 0.0;
         List<Point> tour = getVisitSequence();
-        Iterator<Point> iterator1 = tour.iterator();
-        Iterator<Point> iterator2 = tour.subList(1, tour.size()).iterator();
-        Point point1, point2;
-        while (iterator2.hasNext()) {
-            point1 = iterator1.next();
-            point2 = iterator2.next();
-            totalDistance += point1.distanceTo(point2);
+        for (int i = 0; i < tour.size() - 1; i++) {
+            totalDistance += tour.get(i).distanceTo(tour.get(i + 1));
         }
-        point1 = iterator1.next();
-        totalDistance += tour.get(0).distanceTo(point1);
+        totalDistance += tour.get(0).distanceTo(tour.get(tour.size()-1));
         return totalDistance;
     }
 
@@ -116,19 +111,12 @@ public class MinimalSpanningTreeTour extends Tour {
      * Return the empty list if world is empty.
      */
     public List<Point> getVisitSequence() {
-        visitedPoints = new ArrayList<Point>();
-        if (getWorld().getNbPoints() != 0) {
-            Point first = getMSTRoot();
-            HashSet<MSTEdge> visitedEdges = new HashSet<MSTEdge>();
-            visitedPoints.add(first);
-            constructTour(first, visitedEdges);
-        }
-        return visitedPoints;
+        return tour;
     }
 
     private void constructMST(World world) {
-        edges = new HashSet<MSTEdge>();
-        points = new HashSet<Point>();
+        edges = new ArrayList<MSTEdge>();
+        points = new ArrayList<Point>();
         double edgeLength;
         if (world.getNbPoints() != 0) {
             Point point = world.getPoints().get(0);
@@ -156,6 +144,16 @@ public class MinimalSpanningTreeTour extends Tour {
         }
     }
 
+    private void constructTour() {
+        tour = new ArrayList<Point>();
+        if (getWorld().getNbPoints() != 0) {
+            Point first = getMSTRoot();
+            HashSet<MSTEdge> visitedEdges = new HashSet<MSTEdge>();
+            tour.add(first);
+            constructTour(first, visitedEdges);
+        }
+    }
+
     private void constructTour(Point point, HashSet<MSTEdge> visitedEdges) {
         usedEdges = new ArrayList<MSTEdge>();
         PriorityQueue<MSTEdge> queue = new PriorityQueue<MSTEdge>(10, new EdgeComparator());
@@ -166,7 +164,7 @@ public class MinimalSpanningTreeTour extends Tour {
         while (!queue.isEmpty()) {
             MSTEdge edge = queue.remove();
             Point next = edge.getOtherPoint(point);
-            visitedPoints.add(next);
+            tour.add(next);
             visitedEdges.add(edge);
             if (count == 0) {
                 usedEdges.add(edge);
@@ -200,9 +198,9 @@ public class MinimalSpanningTreeTour extends Tour {
         }
     }
 
-    private HashSet<MSTEdge> edges;
-    private HashSet<Point> points;
+    private List<MSTEdge> edges;
+    private List<Point> points;
     private List<MSTEdge> usedEdges;
-    private List<Point> visitedPoints;
+    private List<Point> tour;
 
 }
