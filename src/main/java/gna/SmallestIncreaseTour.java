@@ -59,22 +59,17 @@ public class SmallestIncreaseTour extends IncrementallyConstructedTour {
         for (int i = 0; i < tour.size() - 1; i++) {
             double initialDistance = tour.get(i).distanceTo(tour.get(i + 1));
             double distanceToNext = tour.get(i).distanceTo(next) + next.distanceTo(tour.get(i + 1));
-            double diff = distanceToNext - initialDistance;
-            if (diff < smallestIncrease) {
-                smallestIncrease = diff;
+            if (distanceToNext - initialDistance < smallestIncrease) {
+                smallestIncrease = distanceToNext - initialDistance;
                 nextInsertion = i + 1;
             }
         }
-        double distanceToFirst = next.distanceTo(tour.get(0));
-        if (distanceToFirst < smallestIncrease) {
-            smallestIncrease = distanceToFirst;
+        double initialDistance = tour.get(0).distanceTo(tour.get(tour.size() - 1));
+        double distanceToNext = tour.get(0).distanceTo(next) + tour.get(tour.size() - 1).distanceTo(next);
+        if (distanceToNext - initialDistance < smallestIncrease) {
             nextInsertion = 0;
         }
-        double distanceToLast = next.distanceTo(tour.get(tour.size() - 1));
-        if (distanceToLast < smallestIncrease) {
-            smallestIncrease = distanceToLast;
-            nextInsertion = tour.size() - 1;
-        }
+
         return nextInsertion;
     }
 
