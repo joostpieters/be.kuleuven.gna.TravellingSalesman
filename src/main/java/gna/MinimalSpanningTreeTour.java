@@ -90,7 +90,11 @@ public class MinimalSpanningTreeTour extends Tour {
      * This method returns null if and only if <code>getWorld().getPoints()</code> is empty.
      */
     public Point getMSTRoot() {
-        return getWorld().getPoints().get(0);
+        if (getWorld().getNbPoints() != 0) {
+            return getWorld().getPoints().get(0);
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -113,10 +117,12 @@ public class MinimalSpanningTreeTour extends Tour {
      */
     public List<Point> getVisitSequence() {
         visitedPoints = new ArrayList<Point>();
-        Point first = getMSTRoot();
-        HashSet<MSTEdge> visitedEdges = new HashSet<MSTEdge>();
-        visitedPoints.add(first);
-        constructTour(first, visitedEdges);
+        if (getWorld().getNbPoints() != 0) {
+            Point first = getMSTRoot();
+            HashSet<MSTEdge> visitedEdges = new HashSet<MSTEdge>();
+            visitedPoints.add(first);
+            constructTour(first, visitedEdges);
+        }
         return visitedPoints;
     }
 
@@ -124,27 +130,29 @@ public class MinimalSpanningTreeTour extends Tour {
         edges = new HashSet<MSTEdge>();
         points = new HashSet<Point>();
         double edgeLength;
-        Point point = world.getPoints().get(0);
-        points.add(point);
-        MSTEdge edge;
-        PriorityQueue<MSTEdge> queue = new PriorityQueue<MSTEdge>(10, new EdgeComparator());
-        int i = 0;
-        while (i != world.getNbPoints() - 1) {
-            for (Point point2 : world.getPoints()) {
-                if (point != point2 && !points.contains(point2)) {
-                    edgeLength = point.distanceTo(point2);
-                    edge = new MSTEdge(point, point2);
-                    edge.setDistance(edgeLength);
-                    queue.add(edge);
-                }
-            }
-            do {
-                edge = queue.remove();
-            } while (edge.bothPointsVisited());
-            edges.add(edge);
-            point = edge.getOtherPointVisited();
+        if (world.getNbPoints() != 0) {
+            Point point = world.getPoints().get(0);
             points.add(point);
-            i++;
+            MSTEdge edge;
+            PriorityQueue<MSTEdge> queue = new PriorityQueue<MSTEdge>(10, new EdgeComparator());
+            int i = 0;
+            while (i != world.getNbPoints() - 1) {
+                for (Point point2 : world.getPoints()) {
+                    if (point != point2 && !points.contains(point2)) {
+                        edgeLength = point.distanceTo(point2);
+                        edge = new MSTEdge(point, point2);
+                        edge.setDistance(edgeLength);
+                        queue.add(edge);
+                    }
+                }
+                do {
+                    edge = queue.remove();
+                } while (edge.bothPointsVisited());
+                edges.add(edge);
+                point = edge.getOtherPointVisited();
+                points.add(point);
+                i++;
+            }
         }
     }
 

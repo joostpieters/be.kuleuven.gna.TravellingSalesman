@@ -38,12 +38,14 @@ public class NearestNeighborTour extends IncrementallyConstructedTour {
 
     private void constructTour() {
         tour = new ArrayList<Point>();
-        List<Point> unvisitedPoints = new ArrayList<Point>(points);
-        Point initialPoint = unvisitedPoints.remove(0);
-        for (int i = 0; i < points.size(); i++) {
-            tour.add(initialPoint);
-            initialPoint = findClosest(initialPoint, unvisitedPoints);
-            unvisitedPoints.remove(initialPoint);
+        if (getWorld().getNbPoints() != 0) {
+            List<Point> unvisitedPoints = new ArrayList<Point>(points);
+            Point initialPoint = unvisitedPoints.remove(0);
+            for (int i = 0; i < points.size(); i++) {
+                tour.add(initialPoint);
+                initialPoint = findClosest(initialPoint, unvisitedPoints);
+                unvisitedPoints.remove(initialPoint);
+            }
         }
     }
 

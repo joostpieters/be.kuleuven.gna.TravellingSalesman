@@ -39,13 +39,17 @@ public class SmallestIncreaseTour extends IncrementallyConstructedTour {
 
     private void constructTour() {
         tour = new ArrayList<Point>();
-        List<Point> unvisitedPoints = new ArrayList<Point>(points);
-        tour.add(unvisitedPoints.remove(0));
-        tour.add(unvisitedPoints.remove(1));
-        while (!unvisitedPoints.isEmpty()) {
-            Point next = unvisitedPoints.remove(0);
-            int nextInsertion = calculateInsertionPoint(next);
-            tour.add(nextInsertion, next);
+        if (getWorld().getNbPoints() != 0) {
+            List<Point> unvisitedPoints = new ArrayList<Point>(points);
+            tour.add(unvisitedPoints.remove(0));
+            if (tour.size() > 1) {
+                tour.add(unvisitedPoints.remove(1));
+            }
+            while (!unvisitedPoints.isEmpty()) {
+                Point next = unvisitedPoints.remove(0);
+                int nextInsertion = calculateInsertionPoint(next);
+                tour.add(nextInsertion, next);
+            }
         }
     }
 
