@@ -71,11 +71,12 @@ public class MinimalSpanningTreeTour extends Tour {
     @Override
     public double getTotalDistance() {
         double totalDistance = 0.0;
-        List<Point> tour = getVisitSequence();
-        for (int i = 0; i < tour.size() - 1; i++) {
-            totalDistance += tour.get(i).distanceTo(tour.get(i + 1));
+        if (tour.size() > 1) {
+            for (int i = 0; i < tour.size() - 1; i++) {
+                totalDistance += tour.get(i).distanceTo(tour.get(i + 1));
+            }
+            totalDistance += tour.get(0).distanceTo(tour.get(tour.size()-1));
         }
-        totalDistance += tour.get(0).distanceTo(tour.get(tour.size()-1));
         return totalDistance;
     }
 
